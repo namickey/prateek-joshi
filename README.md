@@ -1,2 +1,2 @@
-# prateek-joshi
+# Prateek-Joshi
 Artificial Intelligence with Python
