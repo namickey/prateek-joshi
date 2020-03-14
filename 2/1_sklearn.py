@@ -2,6 +2,7 @@
 import numpy as np
 from sklearn import preprocessing
 from functools import reduce
+import matplotlib.pyplot as plt
 
 def a():
     inputdata = np.array([[5.1, -2.9, 3.3],
@@ -55,6 +56,45 @@ def b():
     print('labes:', list(decodedList))
 
     # ロジスティック回帰による分類気
-    
-a()
-b()
+    from sklearn import linear_model
+    X = np.array([[3.1, 7.2],[4,6.7],[2.9,8],[5.1,4.5],[6,5],
+    [5.6,5],[3.3,0.4],[3.9,0.9],[2.8,1],[0.5,3.4],
+    [1,4],[0.6,4.9]])
+    y = np.array([0,0,0,1,1,1,2,2,2,3,3,3])
+    print(len(X), len(y))
+    classifier = linear_model.LogisticRegression(solver='liblinear', C=1, multi_class='auto')
+    classifier.fit(X, y)
+    vc(classifier, X, y)
+
+# visualize_classifier
+def vc(classifier, X, y, title=''):
+    print(X[:, 0])
+    minx, maxx = X[:, 0].min() - 1.0, X[:, 0].max() + 1.0
+    miny, maxy = X[:, 1].min() - 1.0, X[:, 1].max() + 1.0
+    print(minx, maxx)
+    print(miny, maxy)
+    mesh_step_size = 0.1
+    xvals, yvals = np.meshgrid(np.arange(minx, maxx, mesh_step_size),
+                               np.arange(miny, maxy, mesh_step_size))
+    output = classifier.predict(np.c_[xvals.ravel(), yvals.ravel()])
+    print(output)
+    print(xvals.shape)
+    output = output.reshape(xvals.shape)
+    print(output)
+    plt.figure()
+    plt.title(title)
+    plt.pcolormesh(xvals, yvals, output, cmap=plt.cm.Set3)
+    plt.scatter(X[:,0], X[:,1], c=y, s=75, edgecolors='black', linewidth=1, cmap=plt.cm.jet)
+    plt.xlim(xvals.min(), xvals.max())
+    plt.ylim(yvals.min(), yvals.max())
+    plt.xticks((np.arange(int(minx), int(maxx), 1.0)))
+    plt.yticks((np.arange(int(miny), int(maxy), 1.0)))
+    plt.show()
+
+def c():
+    #単純ベイズ分類器
+    from sklearn.naive_bayes import GaussianNB
+
+#a()
+#b()
+c()
