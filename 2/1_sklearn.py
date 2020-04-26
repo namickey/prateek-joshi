@@ -96,5 +96,5 @@ def c():
     from sklearn.naive_bayes import GaussianNB
 
 #a()
-#b()
+b()
 c()
